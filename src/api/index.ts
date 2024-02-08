@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const baseUrl = 'https://short-coats-invite.loca.lt'
+const baseUrl = process.env.EXPO_PUBLIC_BASE_URL;
 
 const api = axios.create({
   baseURL: baseUrl,
