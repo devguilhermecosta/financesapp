@@ -32,7 +32,13 @@ export default function SignUpPage({ navigation }: { navigation: any }): React.J
         email: emailValue,
         password: passwordValue
       }, config)
-      .then(() => setRegistered(true))
+      .then(() => {
+        setRegistered(true);
+        setErrorFName('');
+        setErrorLName('');
+        setErrorEmail('');
+        setErrorPassword('');
+      })
       .catch(e => {
         const dataError = e.response.data;
 
