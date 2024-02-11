@@ -19,6 +19,15 @@ export default function AuthRoute(): React.JSX.Element {
       }}
     >
       <Stack.Screen
+        name='home'
+        component={Home}
+        options={{
+          headerTitle: 'Home',
+          headerShown: false,
+        }}
+      />
+
+      <Stack.Screen
         name='signin'
         component={SignInPage}
         options={{
@@ -39,12 +48,6 @@ export default function AuthRoute(): React.JSX.Element {
           headerBackTitleVisible: false,
         }}
       />
-      <Stack.Screen
-        name='home'
-        component={Home}
-      />
     </Stack.Navigator>
   )
 }
-
-// TODO: to create an context to manager the user data

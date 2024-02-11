@@ -5,7 +5,7 @@ import { api } from '../api';
 
 interface AuthContextProps {
   user: Promise<string | null> | null;
-  handleLogin: (email: string, password: string) => Promise<void>;
+  handleLogin: (email: string, password: string) => Promise<unknown>;
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
@@ -14,24 +14,30 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   const [user, setUser] = useState<Promise<string | null> | null>(() => AsyncStorage.getItem('@access_token'));
   const [loading, setLoading] = useState(true);
 
-  async function handleLogin(email: string, password: string): Promise<void> {
+  const handleLogin = async function(email: string, password: string) {
     const config = {
       headers: {
         'Content-Type': 'application/json'
       }
     }
 
-    return await api.post('/api/token/', {
+    const data = {
       email: email,
       password: password,
-    }, config)
-    .then(resp => {
-      setUser(resp.data.access);
-      AsyncStorage.setItem('@access_token', resp.data.access);
+    };
+
+    const response = await api.post('/api/token/', data, config);
+
+    return new Promise((resolve, reject) => {
+      if (response.status !== 200) {
+        handleLogout();
+        reject('unauthorized');
+      };
+
+      setUser(response.data.access);
+      AsyncStorage.setItem('@access_token', response.data.access);
+      resolve(response.data);
     })
-    .catch(() => {
-      handleLogout();
-    });
   }
 
   function handleLogout(): void {
