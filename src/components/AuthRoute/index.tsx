@@ -19,15 +19,6 @@ export default function AuthRoute(): React.JSX.Element {
       }}
     >
       <Stack.Screen
-        name='home'
-        component={Home}
-        options={{
-          headerTitle: 'Home',
-          headerShown: false,
-        }}
-      />
-
-      <Stack.Screen
         name='signin'
         component={SignInPage}
         options={{
@@ -46,6 +37,15 @@ export default function AuthRoute(): React.JSX.Element {
           },
           headerTintColor: "#fff",
           headerBackTitleVisible: false,
+        }}
+      />
+
+      <Stack.Screen
+        name='home'
+        component={Home}
+        options={{
+          headerTitle: 'Home',
+          headerShown: false,
         }}
       />
     </Stack.Navigator>

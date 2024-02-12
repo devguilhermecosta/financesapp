@@ -6,6 +6,7 @@ import { api } from '../api';
 interface AuthContextProps {
   user: Promise<string | null> | null;
   handleLogin: (email: string, password: string) => Promise<unknown>;
+  handleLogout: () => void;
 }
 
 export const AuthContext = createContext({} as AuthContextProps);
@@ -40,15 +41,31 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     })
   }
 
-  function handleLogout(): void {
+  async function handleLogout(): Promise<void> {
     setUser(null);
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    };
+
+    await api.post('/api/user/logout/', {}, config)
+    .then(() => {
+      try {
+        AsyncStorage.removeItem('@access_token');
+      } catch (e) {}
+    });
   }
 
   const handleTokenRenew = useCallback(() => {
     async function handleRenew() {
       await api.post('/api/token/refresh/')
-      .then((resp) => setUser(resp.data.access))
-      .catch(() => handleLogout())
+      .then((resp) => {
+        setUser(resp.data.access);
+        AsyncStorage.setItem('@access_token', resp.data.access);
+      })
+      .catch(async () => await handleLogout())
       .finally(() => {if (loading) setLoading(false)});
     }
 
@@ -75,6 +92,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
       value={{ 
         user: user,
         handleLogin: handleLogin,
+        handleLogout: handleLogout,
       }}>
       {children}
     </AuthContext.Provider>

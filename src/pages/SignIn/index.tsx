@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { Image } from "react-native";
+import { Image, ActivityIndicator, Keyboard } from "react-native";
 import CustomTextInput from "../../components/TextInput";
 import SubmitButton from "../../components/SubmitButton";
 import Container from "../../components/Container";
@@ -14,38 +14,50 @@ export default function SignInPage({ navigation }: { navigation?: any } ): React
   const [errorMessage, setErrorMessage] = useState('');
 
   const { handleLogin, user } = useContext(AuthContext);
+  const [authLoading, setAuthLoading] = useState(false);
 
   const handleSubmit = () => {
+    setAuthLoading(true);
+    Keyboard.dismiss();
+
     handleLogin(username, password)
     .then(() => setErrorMessage(''))
-    .catch(() => setErrorMessage('invalid username or password')
-    )
+    .catch(() => setErrorMessage('invalid username or password'))
+    .finally(() => {
+      setAuthLoading(false);
+      setUsername('');
+      setPassword('');
+    })
   }
 
   return user
-  ? <Home/>
+  ? <Home />
   : (
     <Container>
-      <Image source={require('../../../assets/images/Logo.png')}/>
-      <CustomTextInput 
-        placeholder="Username" 
-        value={username} 
-        onChangeValue={(text) => setUsername(text)}
-      />
+    <Image source={require('../../../assets/images/Logo.png')}/>
+    <CustomTextInput 
+      placeholder="Username" 
+      value={username} 
+      onChangeValue={(text) => setUsername(text)}
+    />
 
-      {errorMessage && (
-        <ErrorText>{errorMessage}</ErrorText>
-      )}
+    {errorMessage && (
+      <ErrorText>{errorMessage}</ErrorText>
+    )}
 
-      <CustomTextInput
-        secureTextEntry={true}
-        placeholder="Password"
-        value={password}
-        onChangeValue={(text) => setPassword(text)}
-      />
-      <SubmitButton text="Sign In" onPress={handleSubmit}/>
+    <CustomTextInput
+      secureTextEntry={true}
+      placeholder="Password"
+      value={password}
+      onChangeValue={(text) => setPassword(text)}
+    />
+    <SubmitButton text="Sign In" onPress={handleSubmit}/>
 
-      <Text onPress={() => navigation.navigate('signup')}>Register now!</Text>
+    <Text onPress={() => navigation.navigate('signup')}>Register now!</Text>
+
+    {authLoading && (
+      <ActivityIndicator size="large" color="#2989a7"/>
+    )}
     </Container>
   )
 }

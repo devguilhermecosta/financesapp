@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Container from "../../components/Container";
 import CustomTextInput from "../../components/TextInput";
 import SubmitButton from "../../components/SubmitButton";
 import styled from "styled-components/native";
-import { Keyboard } from 'react-native';
+import { Keyboard, ActivityIndicator } from 'react-native';
 import { api } from "../../api";
 
 export default function SignUpPage({ navigation }: { navigation: any }): React.JSX.Element {
@@ -18,8 +18,11 @@ export default function SignUpPage({ navigation }: { navigation: any }): React.J
   const [errorPassword, setErrorPassword] = useState('');
 
   const [registered, setRegistered] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   async function handleRegister(): Promise<void> {
+      setLoading(true);
+
       const config = {
         headers: {
           'Content-Type': 'application/json',
@@ -47,12 +50,15 @@ export default function SignUpPage({ navigation }: { navigation: any }): React.J
         dataError['email'] ? setErrorEmail(dataError['email']) : setErrorEmail('');
         dataError['password'] ? setErrorPassword(dataError['password']) : setErrorPassword('');
       })
-      .finally(() => Keyboard.dismiss());
+      .finally(() => {
+        Keyboard.dismiss();
+        setLoading(false);
+      });
   }
 
   if (registered) {
     setTimeout(() => {
-      return navigation.navigate('signin');
+      return navigation.goBack();
     }, 5000);
   }
 
@@ -63,6 +69,10 @@ export default function SignUpPage({ navigation }: { navigation: any }): React.J
           Registered successfully.
           You are redirect to login page.
         </Message>
+      )}
+
+      {loading && (
+        <ActivityIndicator size="large" color="#2989a7"/>
       )}
 
       <CustomTextInput 
