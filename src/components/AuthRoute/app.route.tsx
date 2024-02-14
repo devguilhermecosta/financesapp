@@ -11,9 +11,7 @@ export default function AppRoute(): React.JSX.Element {
       screenOptions={{
         headerStyle: {
           backgroundColor: '#daf1f1',
-        },
-        statusBarColor: '#daf1f1',
-        statusBarStyle: 'dark',
+        }
       }}
     >
 
@@ -30,7 +28,7 @@ export default function AppRoute(): React.JSX.Element {
         name='signup'
         component={SignUpPage}
         options={{
-          title: 'Sign Up',
+          title: 'Go Back',
           headerStyle: {
             backgroundColor: "#1661c4",
           },

@@ -25,7 +25,7 @@ export default function SubmitButton(props: SubmitProps): React.JSX.Element {
 
 const Touchable = styled.TouchableOpacity`
   width: 90%;
-  height: 60;
+  height: 60px;
   background-color: #235daa;
   padding: 15px;
   border-radius: 8px;

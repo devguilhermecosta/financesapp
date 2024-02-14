@@ -6,11 +6,18 @@ const Drawer = createDrawerNavigator();
 
 export default function UserRoute(): React.JSX.Element {
   return (
-    <Drawer.Navigator>
+    <Drawer.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: '#daf1f1',
+        }
+      }}
+    >
       <Drawer.Screen
         name="Home"
         component={Home}
       />
+  
     </Drawer.Navigator>
   )
 }

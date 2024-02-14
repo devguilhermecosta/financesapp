@@ -4,7 +4,6 @@ import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { AuthContext } from "../../context";
 import { SimpleLineIcons } from '@expo/vector-icons';
 
-
 export default function Home({ navigation }: { navigation?: any }): React.JSX.Element {
   const { handleLogout } = useContext(AuthContext);
 
