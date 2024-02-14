@@ -3,15 +3,12 @@ import Container from "../../components/Container";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { AuthContext } from "../../context";
 import { SimpleLineIcons } from '@expo/vector-icons';
-import SignInPage from "../SignIn";
 
 
 export default function Home({ navigation }: { navigation?: any }): React.JSX.Element {
-  const { user, handleLogout } = useContext(AuthContext);
+  const { handleLogout } = useContext(AuthContext);
 
-  return !user
-  ? <SignInPage />
-  : (
+  return(
     <Container>
       <TouchableOpacity style={styles.logout} onPress={handleLogout}>
         <Text>logout</Text>
@@ -22,7 +19,6 @@ export default function Home({ navigation }: { navigation?: any }): React.JSX.El
     </Container>  
   )
 }
-
 
 const styles = StyleSheet.create({
   logout: {
