@@ -1,11 +1,10 @@
 import React, { useState, useContext } from "react";
-import { Image, ActivityIndicator, Keyboard } from "react-native";
+import { Image, Keyboard } from "react-native";
 import CustomTextInput from "../../components/TextInput";
 import SubmitButton from "../../components/SubmitButton";
 import Container from "../../components/Container";
 import styled from 'styled-components/native';
 import { AuthContext } from "../../context";
-import Home from "../Home";
 
 
 export default function SignInPage({ navigation }: { navigation?: any } ): React.JSX.Element {
@@ -30,34 +29,32 @@ export default function SignInPage({ navigation }: { navigation?: any } ): React
     })
   }
 
-  return user
-  ? <Home />
-  : (
+  return (
     <Container>
-    <Image source={require('../../../assets/images/Logo.png')}/>
-    <CustomTextInput 
-      placeholder="Username" 
-      value={username} 
-      onChangeValue={(text) => setUsername(text)}
-    />
+      <Image source={require('../../../assets/images/Logo.png')}/>
+      <CustomTextInput 
+        placeholder="Username" 
+        value={username} 
+        onChangeValue={(text) => setUsername(text)}
+      />
 
-    {errorMessage && (
-      <ErrorText>{errorMessage}</ErrorText>
-    )}
+      {errorMessage && (
+        <ErrorText>{errorMessage}</ErrorText>
+      )}
 
-    <CustomTextInput
-      secureTextEntry={true}
-      placeholder="Password"
-      value={password}
-      onChangeValue={(text) => setPassword(text)}
-    />
-    <SubmitButton text="Sign In" onPress={handleSubmit}/>
+      <CustomTextInput
+        secureTextEntry={true}
+        placeholder="Password"
+        value={password}
+        onChangeValue={(text) => setPassword(text)}
+      />
+      <SubmitButton
+        text="Sign In"
+        loading={authLoading}
+        onPress={handleSubmit}
+      />
 
-    <Text onPress={() => navigation.navigate('signup')}>Register now!</Text>
-
-    {authLoading && (
-      <ActivityIndicator size="large" color="#2989a7"/>
-    )}
+      <Text onPress={() => navigation.navigate('signup')}>Register now!</Text>
     </Container>
   )
 }

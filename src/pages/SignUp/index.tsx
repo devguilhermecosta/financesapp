@@ -3,7 +3,7 @@ import Container from "../../components/Container";
 import CustomTextInput from "../../components/TextInput";
 import SubmitButton from "../../components/SubmitButton";
 import styled from "styled-components/native";
-import { Keyboard, ActivityIndicator } from 'react-native';
+import { Keyboard } from 'react-native';
 import { api } from "../../api";
 
 export default function SignUpPage({ navigation }: { navigation: any }): React.JSX.Element {
@@ -71,10 +71,6 @@ export default function SignUpPage({ navigation }: { navigation: any }): React.J
         </Message>
       )}
 
-      {loading && (
-        <ActivityIndicator size="large" color="#2989a7"/>
-      )}
-
       <CustomTextInput 
         placeholder="First Name"
         value={fNameValue}
@@ -107,6 +103,7 @@ export default function SignUpPage({ navigation }: { navigation: any }): React.J
 
       <SubmitButton
         text="Register"
+        loading={loading}
         onPress={handleRegister}
       />
     </Container>
