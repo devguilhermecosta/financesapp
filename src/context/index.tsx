@@ -3,8 +3,16 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { api } from '../api';
 
 
+interface UserProps {
+  firstName: string;
+  lastName: string;
+  fullName: string;
+  email: string;
+}
+
 interface AuthContextProps {
   user: Promise<string | null> | null;
+  userData: UserProps | null;
   handleLogin: (email: string, password: string) => Promise<unknown>;
   handleLogout: () => void;
 }
@@ -13,6 +21,7 @@ export const AuthContext = createContext({} as AuthContextProps);
 
 export default function AuthProvider({ children }: { children: React.ReactNode }): React.JSX.Element {
   const [user, setUser] = useState<Promise<string | null> | null>(() => AsyncStorage.getItem('@access_token'));
+  const [userData, setUserData] = useState<UserProps | null>(null);
   const [loading, setLoading] = useState(true);
 
   const handleLogin = async function(email: string, password: string) {
@@ -35,8 +44,17 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
         reject('unauthorized');
       };
 
-      setUser(response.data.access);
-      AsyncStorage.setItem('@access_token', response.data.access);
+      const token = response.data.access;
+      const resp_user = response.data.user;
+
+      setUser(token);
+      setUserData({
+        firstName: resp_user.first_name,
+        lastName: resp_user.last_name,
+        fullName: resp_user.full_name,
+        email: resp_user.email
+      });
+      AsyncStorage.setItem('@access_token', token);
       resolve(response.data);
     })
   }
@@ -90,9 +108,10 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   return (
     <AuthContext.Provider 
       value={{ 
-        user: user,
-        handleLogin: handleLogin,
-        handleLogout: handleLogout,
+        user,
+        userData,
+        handleLogin,
+        handleLogout,
       }}>
       {children}
     </AuthContext.Provider>
