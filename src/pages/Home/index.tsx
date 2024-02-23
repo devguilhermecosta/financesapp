@@ -1,21 +1,21 @@
 import React, { useContext } from "react";
-import Container from "../../components/Container";
-import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, TouchableOpacity, StyleSheet, StatusBar } from "react-native";
 import { AuthContext } from "../../context";
 import { SimpleLineIcons } from '@expo/vector-icons';
+import { Background } from "./styles";
+import Header from "../../components/Header";
 
 export default function Home({ navigation }: { navigation?: any }): React.JSX.Element {
   const { handleLogout } = useContext(AuthContext);
 
   return(
-    <Container>
+    <Background>
+      <Header title='My movements'/>
       <TouchableOpacity style={styles.logout} onPress={handleLogout}>
         <Text>logout</Text>
         <SimpleLineIcons name="logout" size={24}/>
       </TouchableOpacity>
-
-      <Text>Home Page</Text>
-    </Container>  
+    </Background>  
   )
 }
 

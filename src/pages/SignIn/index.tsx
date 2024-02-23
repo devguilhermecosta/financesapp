@@ -12,7 +12,7 @@ export default function SignInPage({ navigation }: { navigation?: any } ): React
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const { handleLogin, user } = useContext(AuthContext);
+  const { handleLogin } = useContext(AuthContext);
   const [authLoading, setAuthLoading] = useState(false);
 
   const handleSubmit = () => {

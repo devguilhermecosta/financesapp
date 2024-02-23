@@ -8,16 +8,24 @@ export default function UserRoute(): React.JSX.Element {
   return (
     <Drawer.Navigator
       screenOptions={{
-        headerStyle: {
-          backgroundColor: '#daf1f1',
-        }
+        headerShown: false,
+
+        drawerStyle: {
+          backgroundColor: '#FFF',
+          paddingTop: 20,
+        },
+
+        drawerActiveBackgroundColor: '#3b3dbf',
+        drawerActiveTintColor: '#FFF',
+  
+        drawerInactiveBackgroundColor: '#F0F2FF',
+        drawerInactiveTintColor: '#121212',
       }}
     >
       <Drawer.Screen
         name="Home"
         component={Home}
-      />
-  
+      /> 
     </Drawer.Navigator>
   )
 }
